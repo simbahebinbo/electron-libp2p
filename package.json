@@ -1,0 +1,27 @@
+{
+  "name": "electron-ws",
+  "version": "1.0.0",
+  "main": "main.js",
+  "author": "olivier nerot",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "electron:start": "electron .",
+    "node:start": "node p2pnode.js"
+  },
+  "devDependencies": {
+    "electron": "^22.0.0"
+  },
+  "dependencies": {
+    "@chainsafe/libp2p-noise": "^10.2.0",
+    "@libp2p/bootstrap": "^5.0.1",
+    "@libp2p/floodsub": "^5.0.0",
+    "@libp2p/mdns": "^5.1.0",
+    "@libp2p/mplex": "^7.1.0",
+    "@libp2p/tcp": "^6.0.4",
+    "lib0": "^0.2.54",
+    "libp2p": "^0.40.0",
+    "uint8arrays": "^4.0.2",
+    "ws": "^8.11.0"
+  }
+}
