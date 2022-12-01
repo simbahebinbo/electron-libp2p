@@ -50,13 +50,13 @@ async function start() {
     ],
     streamMuxers: [mplex()],
     connectionEncryption: [noise()],
-    connectionManager: {
-      maxParallelDials: 150, // 150 total parallel multiaddr dials
-      maxDialsPerPeer: 4, // Allow 4 multiaddrs to be dialed per peer in parallel
-      dialTimeout: 30e3, // 10 second dial timeout per peer dial
-      inboundUpgradeTimeout: 30e3,
-      autoDial: true,
-    },
+    // connectionManager: {
+    //   maxParallelDials: 150, // 150 total parallel multiaddr dials
+    //   maxDialsPerPeer: 4, // Allow 4 multiaddrs to be dialed per peer in parallel
+    //   dialTimeout: 30e3, // 10 second dial timeout per peer dial
+    //   inboundUpgradeTimeout: 30e3,
+    //   autoDial: true,
+    // },
     pubsub: floodsub(),
     // connectionProtector,
   };
@@ -101,19 +101,19 @@ async function start() {
     log('libp2p.onPeerDisconnected', remotePeer.toString());
   });
 
-  await libp2pnode.start();
-
-  log('libp2p started');
-
   libp2pnode.pubsub.addEventListener('message', (evt) => {
     log(`libp2p message: ${uint8ArrayToString(evt.detail.data)} on topic ${evt.detail.topic}`);
   });
   libp2pnode.pubsub.subscribe('i2knGS');
 
+  
+  await libp2pnode.start();
+  log('libp2p started');
+  
   libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PEER ONLINE : ${myPeerId.toString()}`));
 
   const multiAddrs = libp2pnode.getMultiaddrs();
-  return multiAddrs.map((m) => m.toString());
+  log(multiAddrs.map((m) => m.toString()));
 }
 
 async function stop() {
