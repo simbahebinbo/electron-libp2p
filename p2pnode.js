@@ -101,15 +101,13 @@ async function start() {
     log('libp2p.onPeerDisconnected', remotePeer.toString());
   });
 
+  await libp2pnode.start();
+  log('libp2p started');
+
   libp2pnode.pubsub.addEventListener('message', (evt) => {
     log(`libp2p message: ${uint8ArrayToString(evt.detail.data)} on topic ${evt.detail.topic}`);
   });
   libp2pnode.pubsub.subscribe('i2knGS');
-
-  
-  await libp2pnode.start();
-  log('libp2p started');
-  
   libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PEER ONLINE : ${myPeerId.toString()}`));
 
   const multiAddrs = libp2pnode.getMultiaddrs();
