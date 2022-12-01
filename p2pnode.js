@@ -108,7 +108,9 @@ async function start() {
     log(`libp2p message: ${uint8ArrayToString(evt.detail.data)} on topic ${evt.detail.topic}`);
   });
   libp2pnode.pubsub.subscribe('i2knGS');
-  libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PEER ONLINE : ${myPeerId.toString()}`));
+  setInterval(()=>{
+    libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PUBSUB OK : ${myPeerId.toString()}`));
+  },5000)
 
   const multiAddrs = libp2pnode.getMultiaddrs();
   log(multiAddrs.map((m) => m.toString()));
