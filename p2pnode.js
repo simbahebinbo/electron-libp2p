@@ -1,4 +1,5 @@
 import { createRSAPeerId } from '@libp2p/peer-id-factory'
+import { gossipsub } from '@chainsafe/libp2p-gossipsub';
 
 // libp2p
 let libp2pnode;
@@ -57,7 +58,10 @@ async function start() {
     //   inboundUpgradeTimeout: 30e3,
     //   autoDial: true,
     // },
-    pubsub: floodsub(),
+    pubsub: gossipsub({
+      allowPublishToZeroPeers:true, // or error thrown, not catchable...
+      // directPeers: 
+    }),
     // connectionProtector,
   };
 
@@ -113,7 +117,13 @@ async function start() {
   });
   libp2pnode.pubsub.subscribe('i2knGS');
   setInterval(()=>{
-    libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PUBSUB FROM ${myPeerId.toString()}`));
+    const peers = libp2pnode.pubsub.getSubscribers('i2knGS');
+    log('pubsub peers', peers);
+    try {
+      libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PUBSUB FROM ${myPeerId.toString()}`));
+    } catch (error) {
+      log(error);
+    }
   },5000)
 
   const multiAddrs = libp2pnode.getMultiaddrs();
