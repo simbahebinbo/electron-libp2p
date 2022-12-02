@@ -29,7 +29,7 @@ async function start() {
   const peerId = await createRSAPeerId();
   const PK = await unmarshalPrivateKey(peerId.privateKey);
   myPeerId = await createFromPrivKey(PK);
-  console.log(myPeerId);
+  console.log(myPeerId.toString());
 
   // const connectionProtector = preSharedKey({
   //   psk: new Uint8Array(Buffer.from(swarmKey, 'base64')),
@@ -87,14 +87,18 @@ async function start() {
     const { remotePeer } = connection;
     log('libp2p.onPeerConnected', remotePeer.toString());
 
-    // send hello
-    const stream = await libp2pnode.dialProtocol(remotePeer, ['/i2knV3']);
-    await pipe(
-      [uint8ArrayFromString(`HELLO FROM ${myPeerId.toString()}`)],
-      stream,
-    );
+    // send hello on CONNECT
+    try {
+      const stream = await libp2pnode.dialProtocol(remotePeer, ['/i2knV3']);
+      await pipe(
+        [uint8ArrayFromString(`HELLO FROM ${myPeerId.toString()}`)],
+        stream,
+      );
+    } catch (error) {
+      log('ERROR !!!', error);
+    }
   });
-
+  
   libp2pnode.connectionManager.addEventListener('peer:disconnect', (evt) => {
     const { detail: connection } = evt;
     const { remotePeer } = connection;
@@ -109,7 +113,7 @@ async function start() {
   });
   libp2pnode.pubsub.subscribe('i2knGS');
   setInterval(()=>{
-    libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PUBSUB OK : ${myPeerId.toString()}`));
+    libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`PUBSUB FROM ${myPeerId.toString()}`));
   },5000)
 
   const multiAddrs = libp2pnode.getMultiaddrs();
