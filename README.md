@@ -1,5 +1,11 @@
 # electron-libp2p
 
-yarn
-yarn node:start
-yarn electron:start
+```shell
+$ yarn
+
+$ yarn node:start
+
+$ yarn electron:start
+
+```
+

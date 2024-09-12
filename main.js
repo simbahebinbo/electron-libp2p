@@ -1,5 +1,5 @@
 // main.js
-import { app, BrowserWindow } from 'electron'
+import {app, BrowserWindow} from 'electron'
 // import { createRSAPeerId } from '@libp2p/peer-id-factory'
 // import { createLibp2p } from 'libp2p';
 // import { floodsub } from '@libp2p/floodsub';
@@ -16,20 +16,20 @@ import { app, BrowserWindow } from 'electron'
 // import uint8ArrayToString = (import 'uint8arrays/to-string'.toString;
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-  })
-  mainWindow.loadFile('index.html')
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+    })
+    mainWindow.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
-  createWindow();
-  start();
+    createWindow();
+    // start();
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit()
+    if (process.platform !== 'darwin') app.quit()
 })
 
 // libp2p
@@ -164,3 +164,4 @@ app.on('window-all-closed', () => {
 // async function send(msg) {
 //   await libp2pnode.pubsub.publish('i2knGS', new TextEncoder().encode(`MSG : ${msg}`));
 // }
+
